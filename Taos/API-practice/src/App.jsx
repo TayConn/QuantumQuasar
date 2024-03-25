@@ -20,7 +20,7 @@ function App() {
       clearTimeout(debounceTimeout.current);
       debounceTimeout.current = setTimeout(() => {
         fetchPokemonData(pokemonSearch);
-      }, 500);
+      }, 1000);
     }
     fetchAllPokemonNames(); // Fetch all Pokémon names on component mount
   }, [pokemonSearch]);
