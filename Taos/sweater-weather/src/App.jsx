@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-function getWeather(url) {
+function useWeather(url) {
   const [data, setTemp] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,14 +15,15 @@ function getWeather(url) {
         const result = await response.json();
         setTemp(result);
         setLoading(false);
-        console.log(data.current.temperature_2m);
+        console.log(result.current.temperature_2m);
       } catch (error) {
         console.log("error fetching weather", error);
         setLoading(false);
       }
     };
     fetchWeather();
-  }, [url, data]);
+  }, [url]); // Removed 'data' from the dependency array
+
   return { data, loading };
 }
 
@@ -44,7 +45,7 @@ const wearSweater = (data) => {
       <div className="wearSweater-details">
         <img className="clothing-img" src={sweater} alt="a sweater" />
         <h2>
-          Its a little chilly today. <br />A sweater is recommended
+          Its a little chilly today. <br />A sweater is recommended.
         </h2>
       </div>
     );
@@ -52,7 +53,7 @@ const wearSweater = (data) => {
 };
 
 function App() {
-  const { data, loading } = getWeather(
+  const { data, loading } = useWeather(
     "https://api.open-meteo.com/v1/forecast?latitude=38.3566&longitude=-121.9877&current=temperature_2m,is_day,precipitation,wind_speed_10m&hourly=&daily=&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FLos_Angeles&forecast_days=1"
   );
   if (loading) {
@@ -74,7 +75,7 @@ function App() {
           </div>
           <div className="details-column">
             <h3>Current Precipitation:</h3>
-            <p>{JSON.stringify(data.current.precipitation)}&quot</p>
+            <p>{JSON.stringify(data.current.precipitation)}&quot;</p>
           </div>
         </div>
       </div>
